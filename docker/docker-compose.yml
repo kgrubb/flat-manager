@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  flat-manager:
+      depends_on:
+        - postgres
+      build:
+        context: '.'
+        dockerfile: 'Dockerfile'
+      volumes:
+        - ${PWD}/flatman-repo:/var/run/flat-manager
+        - ${PWD}/postgres-run:/var/run/postgresql
+      ports:
+        - 8080:8080
+  postgres:
+    image: postgres
+    ports:
+      - 5432:5432
+    volumes:
+        - ${PWD}/postgres-run:/var/run/postgresql
+    environment:
+      POSTGRES_PASSWORD: mysecretpasspassword
+      POSTGRES_USER: flatmanager
+      POSTGRES_DB: repo
